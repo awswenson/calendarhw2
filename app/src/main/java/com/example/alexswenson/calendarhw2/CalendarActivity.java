@@ -27,7 +27,7 @@ public class CalendarActivity extends AppCompatActivity {
     private ListView eventsListView;
 
     private ArrayList<Event> eventsList;
-    private ArrayAdapter eventsListAdapter;
+    private EventAdapter eventsListAdapter;
 
     private DaoMaster.DevOpenHelper calendarDBHelper;
     private SQLiteDatabase calendarDB;
@@ -51,7 +51,7 @@ public class CalendarActivity extends AppCompatActivity {
         eventsList = new ArrayList<>();
 
         // Setup the eventsListAdapter
-        eventsListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventsList);
+        eventsListAdapter = new EventAdapter(this, eventsList);
         eventsListView.setAdapter(eventsListAdapter);
 
         // initialise the database
@@ -163,6 +163,10 @@ public class CalendarActivity extends AppCompatActivity {
 
             setEventsListForDate(new Date(calendarView.getDate()));
         }
+    }
+
+    public void deleteEvent(Event event) {
+        // TODO
     }
 
     private void initDatabase() {
