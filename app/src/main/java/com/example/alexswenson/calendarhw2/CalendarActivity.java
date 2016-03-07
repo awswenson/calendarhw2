@@ -9,12 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -142,6 +143,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         eventsList.clear();
         eventsList.addAll(eventListFromDB);
+
+        // Sort the list before displaying the events
+        Collections.sort(eventsList, new Comparator<Event>() {
+            public int compare(Event event1, Event event2) {
+                return event1.getDate().compareTo(event2.getDate());
+            }
+        });
 
         eventsListAdapter.notifyDataSetChanged();
 

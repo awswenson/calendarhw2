@@ -1,7 +1,9 @@
 package com.example.alexswenson.calendarhw2;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -16,7 +18,6 @@ import android.widget.TimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Random;
 
 public class AddEventFragment extends Fragment {
 
@@ -94,6 +95,22 @@ public class AddEventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+
+                if ("".equals(title_editText.getText().toString())) {
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage("Please provide a title for the event.")
+                            .setCancelable(true)
+                            .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+
+                    return;
+                }
 
                 Intent data = new Intent();
                 data.putExtra("title", title_editText.getText().toString());
