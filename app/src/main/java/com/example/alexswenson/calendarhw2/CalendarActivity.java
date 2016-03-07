@@ -144,6 +144,9 @@ public class CalendarActivity extends AppCompatActivity {
         eventsList.addAll(eventListFromDB);
 
         eventsListAdapter.notifyDataSetChanged();
+
+        // Force the focus of the calendarView to the specified date
+        calendarView.setDate(date.getTime());
     }
 
     @Override
@@ -170,14 +173,18 @@ public class CalendarActivity extends AppCompatActivity {
 
             eventDao.insert(event);
 
-            closeReopenDatabase();
-
-            setEventsListForDate(new Date(calendarView.getDate()));
+            setEventsListForDate(date);
         }
     }
 
     public void deleteEvent(Event event) {
-        // TODO
+
+        // Keep the date so we can refresh the list for the same date
+        Date date = event.getDate();
+
+        eventDao.delete(event);
+
+        setEventsListForDate(date);
     }
 
     private void initDatabase() {
