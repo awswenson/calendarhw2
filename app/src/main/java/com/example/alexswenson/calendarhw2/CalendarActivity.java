@@ -64,7 +64,18 @@ public class CalendarActivity extends AppCompatActivity {
 
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                setEventsListForDate(new Date(view.getDate()));
+                Calendar selectedDay = Calendar.getInstance();
+
+                selectedDay.set(Calendar.YEAR, year);
+                selectedDay.set(Calendar.MONTH, month);
+                selectedDay.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                selectedDay.set(Calendar.HOUR_OF_DAY, 0);
+                selectedDay.set(Calendar.MINUTE, 0);
+                selectedDay.set(Calendar.SECOND, 0);
+                selectedDay.set(Calendar.MILLISECOND, 0);
+
+                setEventsListForDate(selectedDay.getTime());
             }
         });
 
