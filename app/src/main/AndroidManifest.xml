@@ -12,7 +12,8 @@
         <activity
             android:name=".CalendarActivity"
             android:label="@string/activity_calendar_title"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +23,8 @@
 
         <activity
             android:name=".AddEventActivity"
-            android:label="@string/activity_add_event_title" />
+            android:label="@string/activity_add_event_title"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
