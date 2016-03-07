@@ -1,5 +1,6 @@
 package com.example.alexswenson.calendarhw2;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import de.greenrobot.dao.QueryBuilder;
 
@@ -32,6 +34,8 @@ public class CalendarActivity extends AppCompatActivity {
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private EventDao eventDao;
+
+    private final int ADD_EVENT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +73,8 @@ public class CalendarActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO Make another activity to create an event and store it in the database. Then
-                // refresh the eventsList to display the newly added event
+                Intent intent = new Intent(view.getContext(), AddEventActivity.class);
+                startActivityForResult(intent, ADD_EVENT_REQUEST);
             }
         });
     }
@@ -129,6 +133,36 @@ public class CalendarActivity extends AppCompatActivity {
         eventsList.addAll(eventListFromDB);
 
         eventsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Check which request we're responding to and ensure the result was successful
+        if (requestCode == ADD_EVENT_REQUEST && resultCode == RESULT_OK) {
+
+            // Generate random Id for Guest object to place in database
+            Random rand = new Random();
+
+            // Use rand.nextLong() for Guest object Id.
+            long id = rand.nextLong();
+
+            // Make sure the id doesn't already exist in the database
+            while (eventDao.load(id) != null) {
+                id = rand.nextLong();
+            }
+
+            String title = data.getStringExtra("title");
+            Date date = (Date) data.getSerializableExtra("date");
+
+            Event event = new Event(id, title, date);
+
+            eventDao.insert(event);
+
+            closeReopenDatabase();
+
+            setEventsListForDate(new Date(calendarView.getDate()));
+        }
     }
 
     private void initDatabase() {
